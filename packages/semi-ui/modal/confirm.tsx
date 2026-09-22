@@ -18,6 +18,7 @@ export default function confirm<T>(props: ConfirmProps) {
     document.body.appendChild(div);
 
     let currentConfig = { ...props };
+    let closing = false;
 
     const destroy = () => {
         reactUnmount(div);
@@ -39,8 +40,13 @@ export default function confirm<T>(props: ConfirmProps) {
     function render(renderProps: ConfirmProps) {
         const { afterClose } = renderProps;
         reactRender(<ConfirmModal {...renderProps} afterClose={() => {
+            if (closing) {
+                return;
+            }
+            closing = true;
             afterClose?.();
-            destroy();
+            // afterClose 位于 React 提交阶段，完整销毁需等当前提交结束。
+            Promise.resolve().then(destroy);
         }} motion={props.motion}/>, div);
     }
 
