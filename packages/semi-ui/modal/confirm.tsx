@@ -45,7 +45,6 @@ export default function confirm<T>(props: ConfirmProps) {
             }
             closing = true;
             afterClose?.();
-            // afterClose 位于 React 提交阶段，完整销毁需等当前提交结束。
             Promise.resolve().then(destroy);
         }} motion={props.motion}/>, div);
     }
