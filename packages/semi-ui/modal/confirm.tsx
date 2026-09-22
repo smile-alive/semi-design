@@ -40,9 +40,7 @@ export default function confirm<T>(props: ConfirmProps) {
     function render(renderProps: ConfirmProps) {
         const { afterClose } = renderProps;
         reactRender(<ConfirmModal {...renderProps} afterClose={() => {
-            if (closing) {
-                return;
-            }
+            if (closing) return;
             closing = true;
             afterClose?.();
             Promise.resolve().then(destroy);
